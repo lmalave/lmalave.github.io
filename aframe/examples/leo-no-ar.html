@@ -87,7 +87,7 @@
 				 a-webcam
 				 position="0 0 -1000"
 				 rotation="0 0 0"
-				 width="2000" height="1500">
+				 width="0" height="0">
 		</a-video>
 		</a-camera>
 		<a-entity    id ="bot"
@@ -104,7 +104,7 @@
 	<script>
 		// You can also set which camera to use (front/back/etc)
 		// @SEE https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-		navigator.mediaDevices.getUserMedia({audio: false, video: true})
+		navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: "environment"}})
 				.then(stream => {
 					let $video = document.querySelector('video')
 					$video.srcObject = stream
