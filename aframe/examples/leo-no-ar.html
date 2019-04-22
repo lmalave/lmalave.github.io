@@ -81,7 +81,7 @@
 
 		<a-camera-static/> -->
 		<a-camera>
-		<a-video id="screen-1"
+		<a-video id="videoScreen"
 				 material="src:#webcam; shader: flat;"
 				 geometry="primitive: plane; segmentsHeight: 16; segmentsWidth: 16"
 				 a-webcam
@@ -110,6 +110,32 @@
 					$video.srcObject = stream
 					$video.onloadedmetadata = () => {
 						$video.play()
+						var height = stream.getVideoTracks()[0].getSettings().height;
+						var width = stream.getVideoTracks()[0].getSettings().width;
+						console.log('width: ' + width + ', height: ' + height);
+						var screenwidth = document.documentElement.clientWidth
+						var screenheight = document.documentElement.clientHeight
+						console.log('screenwidth: ' + screenwidth + ', screenheight: ' + screenheight);
+						var screenAspectRatio = screenwidth / screenheight;
+						console.log('screenAspectRatio: ' + screenAspectRatio );
+						var videoAspectRatio = width / height;
+						console.log('videoAspectRatio: ' + videoAspectRatio );
+						var quadDistance = 1000;
+						var fieldOfView = 80;
+						var videoScreen = document.getElementById('videoScreen');
+						if (screenAspectRatio >= videoAspectRatio) { //
+							var frustumHeight = 2.0 * quadDistance * Math.tan(fieldOfView * 0.5 * (Math.PI / 180)) * (screenAspectRatio / videoAspectRatio);
+							var width = frustumHeight * videoAspectRatio;
+							console.log('frustumHeight: ' + frustumHeight);
+							videoScreen.setAttribute('width', String(width));
+							videoScreen.setAttribute('height', String(frustumHeight));
+						} else {
+							var frustumHeight = 2.0 * quadDistance * Math.tan(fieldOfView * 0.5 * (Math.PI / 180));
+							var width = frustumHeight * videoAspectRatio;
+							console.log('frustumHeight: ' + frustumHeight);
+							videoScreen.setAttribute('width', String(width));
+							videoScreen.setAttribute('height', String(frustumHeight));
+						}
 					}
 				})
 	</script>
