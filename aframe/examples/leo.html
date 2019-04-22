@@ -4,7 +4,58 @@
 <!-- include ar.js for aframe -->
 <script src='../build/aframe-ar.js'></script>
 <script>ARjs.Context.baseURL = '../../three.js/'</script>
+<script src="js/aframe-extras.js"></script>
+<script src="js/aframe-text-geometry-component.min.js"></script>
 
+<script>
+
+	var prevData = "clip: idle; crossFadeDuration: .3";;
+	var listenerAdded = false;
+	var scene = document.querySelector('a-scene');
+	var playOnce = false;
+
+
+
+
+	AFRAME.registerComponent('animation-control', {
+		schema: {default: ''},
+		init() {
+
+			const bot = document.querySelector('#bot');
+			var jumpBut = document.querySelector('#jump');
+			var runBut = document.querySelector('#run');
+			var walkBut = document.querySelector('#walk');
+			var idleBut = document.querySelector('#idle');
+			var scene = document.querySelector('a-scene');
+
+
+
+			this.el.addEventListener('click', () => {
+
+				if (this.el != jumpBut){
+					bot.setAttribute("animation-mixer",this.data);
+					scene.removeEventListener('animation-loop', jumpTrans);
+					prevData = this.data;
+
+				}
+
+				if (this.el == jumpBut) {
+
+					bot.setAttribute("animation-mixer",this.data);
+					var jumpTrans = function () {scene.removeEventListener('animation-loop',jumpTrans); bot.setAttribute("animation-mixer",prevData);console.log("scene ="+scene); console.log("fire")};
+					console.log("prev data from jump button = "+prevData);
+					setTimeout (function(){scene.addEventListener('animation-loop',jumpTrans);},500);
+
+				}
+
+
+			});
+
+
+
+		}
+	});
+</script>
 <!-- start the body of your page -->
 <body style='margin : 0px; overflow: hidden;'>
 	<!-- add some info at the top of the page -->
@@ -16,10 +67,8 @@
 	<!-- Define your 3d scene and enabled ar.js -->
 	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: false;'>
 
-		<!-- Create a anchor to attach your augmented reality -->
 		<a-anchor hit-testing-enabled='true'>
 
-			<!-- Add your augmented reality here -->
 			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
 				<a-torus-knot radius='0.26' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
@@ -29,10 +78,24 @@
 		</a-anchor>
 
 		<!-- Define a static camera -->
-		<a-camera-static/>
+		<a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" shadow></a-box>
+		<a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E" shadow></a-sphere>
+		<a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D" shadow></a-cylinder>
+		<a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" shadow></a-plane>
+		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;' position="0 0 -2">
+			<a-torus-knot radius='0.26' radius-tubular='0.05'>
+				<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+			</a-torus-knot>
+		</a-box>
+		<a-entity    id ="bot"
+					 cursor-listener
+					 scale="3.5 3.5 3.5"
+					 position="0 1 -12.5"
+					 rotation="0 0 0"
+					 animation-mixer="clip: idle"
 
-
-
+					 json-model="src: url(models/bot4.json);"
+		></a-entity>
 
 	</a-scene>
 </body>
