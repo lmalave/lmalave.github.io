@@ -59,6 +59,11 @@
 		}
 	});
 </script>
+<style>
+	.a-enter-vr-button {
+		display: none;
+	}
+</style>
 <!-- start the body of your page -->
 <body style='margin : 0px; overflow: hidden;'>
 	<!-- add some info at the top of the page -->
@@ -93,12 +98,12 @@
 				 width="0" height="0">
 		</a-video>
 		</a-camera>
-		<a-box position="0 0 -5"></a-box>
+		<!-- <a-box position="0 0 -5"></a-box> -->
 		<a-entity    id ="bot"
 					 visible="false"
 					 cursor-listener
-					 scale="1 1 1"
-					 position="0 0 -5"
+					 scale="0.5 0.5 0.5"
+					 position="0 0 -2"
 					 rotation="0 0 0"
 					 animation-mixer="clip: idle"
 					 json-model="src: url(models/bot4.json);"
@@ -158,7 +163,7 @@
 			var cameraPosition = camera.position;
 			console.log("camera direction: " + JSON.stringify(direction));
 			console.log("cameraPosition: " + JSON.stringify(cameraPosition));
-			var distance = 5.0;
+			var distance = 2.0;
 			var position = (-direction.x * distance) + ' ' + (-direction.y * distance) + ' ' + (-direction.z * distance);
 			console.log('about to set bot position to:  ' + position);
 			bot.setAttribute('position', position)
