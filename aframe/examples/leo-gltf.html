@@ -6,6 +6,8 @@
 <script>ARjs.Context.baseURL = '../../three.js/'</script> -->
 <script src="js/aframe-extras.js"></script>
 <script src="js/aframe-text-geometry-component.min.js"></script>
+<script src="js/aframe-spritesheet-component.js"></script>
+<script src="https://unpkg.com/aframe-look-at-component@0.8.x/dist/aframe-look-at-component.min.js"></script>
 
 <script>
 
@@ -110,6 +112,10 @@
 					 animation-mixer="clip: idle"
 					 gltf-model="src: url(models/mech_drone/scene.gltf);"
 		></a-entity>
+		<a-image id="spritesheet" src="images/explosion_spritesheet.png"
+				 sprite-sheet="cols:8; rows: 6; progress: 0;"
+				 position="0 0 -1"
+					visible="false" look-at="[camera]"></a-image>
 	</a-scene>
 	<div style="position: absolute; height: 50px; left: 50px; bottom: 50px;">
 		<button onclick="placeAR();" style="width: 80px; height: 80px; margin-right: 20px;">place</button>
@@ -158,8 +164,9 @@
 
 		function placeAR()
 		{
-			var bot = document.getElementById("bot");
-			bot.setAttribute('visible', 'true');
+			var model = document.getElementById("bot");
+			var spritesheet = document.getElementById("spritesheet");
+			model.setAttribute('visible', 'true');
 			var camera = document.querySelector('[camera]');
 			var cameraRotation = camera.getAttribute('rotation');
 			var direction = camera.object3D.getWorldDirection();
@@ -167,16 +174,33 @@
 			console.log("camera rotation: " + JSON.stringify(cameraRotation));
 			console.log("camera direction: " + JSON.stringify(direction));
 			console.log("cameraPosition: " + JSON.stringify(cameraPosition));
-			var distance = 2.0;
-			var position = (-direction.x * distance) + ' ' + (-direction.y * distance) + ' ' + (-direction.z * distance);
-			console.log('about to set bot position to:  ' + position);
-			bot.setAttribute('position', position)
-			bot.setAttribute('rotation', '0 ' + cameraRotation.y +  ' 0')
+			var modelDistance = 2.0;
+			var spritesheetDistance = 1.0;
+			var modelPosition = (-direction.x * modelDistance) + ' ' + (-direction.y * modelDistance) + ' ' + (-direction.z * modelDistance);
+			var spritesheeetPosition = (-direction.x * spritesheetDistance) + ' ' + (-direction.y * spritesheetDistance) + ' ' + (-direction.z * spritesheetDistance);
+			console.log('about to set model position to:  ' + modelPosition);
+			model.setAttribute('position', modelPosition)
+			model.setAttribute('rotation', '0 ' + cameraRotation.y +  ' 0');
+			spritesheet.setAttribute('visible', 'true');
+			tween.start();
 		}
 
 		function runAnimation(params) {
 			var bot = document.getElementById("bot");
 			bot.setAttribute("animation-mixer", params);
 		}
+	</script>
+	<script type="text/javascript">
+		var animation = { progress: 0 };
+
+		var tween = new TWEEN.Tween(animation)
+				.to({ progress: 1 }, 1000)
+				.onUpdate(function(){
+					document.querySelector('a-image').setAttribute('sprite-sheet', 'progress', animation.progress);
+				});
+
+
+		tween.onComplete(function() { animation.progress = 0; });
+		// tween.chain(tween);
 	</script>
 </body>
