@@ -83,7 +83,7 @@
 		</a-anchor>
 
 		<a-camera-static/> -->
-		<a-camera>
+		<a-camera position="0 0 0">
 		<a-video id="videoScreen"
 				 material="src:#webcam; shader: flat;"
 				 geometry="primitive: plane; segmentsHeight: 16; segmentsWidth: 16"
@@ -93,6 +93,7 @@
 				 width="0" height="0">
 		</a-video>
 		</a-camera>
+		<a-box position="0 0 -5"></a-box>
 		<a-entity    id ="bot"
 					 visible="false"
 					 cursor-listener
@@ -154,8 +155,10 @@
 			bot.setAttribute('visible', 'true');
 			var camera = document.querySelector('[camera]').object3D
 			var direction = camera.getWorldDirection();
+			var cameraPosition = camera.position;
 			console.log("camera direction: " + JSON.stringify(direction));
-			var distance = 5;
+			console.log("cameraPosition: " + JSON.stringify(cameraPosition));
+			var distance = 5.0;
 			var position = (direction.x * distance) + ' ' + (direction.y * distance) + ' ' + (-direction.z * distance);
 			console.log('about to set bot position to:  ' + position);
 			bot.setAttribute('position', position)
