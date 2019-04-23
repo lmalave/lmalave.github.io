@@ -1,0 +1,180 @@
+<!-- include a-frame -->
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+<!-- include ar.js for aframe -->
+<!-- <script src='../build/aframe-ar.js'></script>
+<script>ARjs.Context.baseURL = '../../three.js/'</script> -->
+<script src="js/aframe-extras.js"></script>
+<script src="js/aframe-text-geometry-component.min.js"></script>
+
+<script>
+
+	var prevData = "clip: idle; crossFadeDuration: .3";;
+	var listenerAdded = false;
+	var scene = document.querySelector('a-scene');
+	var playOnce = false;
+
+
+
+
+	AFRAME.registerComponent('animation-control', {
+		schema: {default: ''},
+		init() {
+
+			const bot = document.querySelector('#bot');
+			var jumpBut = document.querySelector('#jump');
+			var runBut = document.querySelector('#run');
+			var walkBut = document.querySelector('#walk');
+			var idleBut = document.querySelector('#idle');
+			var scene = document.querySelector('a-scene');
+
+
+
+			this.el.addEventListener('click', () => {
+
+				if (this.el != jumpBut){
+					bot.setAttribute("animation-mixer",this.data);
+					scene.removeEventListener('animation-loop', jumpTrans);
+					prevData = this.data;
+
+				}
+
+				if (this.el == jumpBut) {
+
+					bot.setAttribute("animation-mixer",this.data);
+					var jumpTrans = function () {scene.removeEventListener('animation-loop',jumpTrans); bot.setAttribute("animation-mixer",prevData);console.log("scene ="+scene); console.log("fire")};
+					console.log("prev data from jump button = "+prevData);
+					setTimeout (function(){scene.addEventListener('animation-loop',jumpTrans);},500);
+
+				}
+
+
+			});
+
+
+
+		},
+		tick() {
+
+		}
+	});
+</script>
+<style>
+	.a-enter-vr-button {
+		display: none;
+	}
+</style>
+<!-- start the body of your page -->
+<body style='margin : 0px; overflow: hidden;'>
+	<!-- add some info at the top of the page -->
+	<!--
+	<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	</div>
+	-->
+	<!-- Define your 3d scene and enabled ar.js -->
+	<a-scene>
+		<a-assets>
+			<video id="webcam" playsinline></video>
+		</a-assets>
+	<!--	<a-anchor hit-testing-enabled='true'>
+
+	<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'>
+					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+				</a-torus-knot>
+			</a-box>
+
+		</a-anchor>
+
+		<a-camera-static/> -->
+		<a-camera position="0 0 0">
+		<a-video id="videoScreen"
+				 material="src:#webcam; shader: flat;"
+				 geometry="primitive: plane; segmentsHeight: 16; segmentsWidth: 16"
+				 a-webcam
+				 position="0 0 -1000"
+				 rotation="0 0 0"
+				 width="0" height="0">
+		</a-video>
+		</a-camera>
+		<!-- <a-box position="0 0 -5"></a-box> -->
+		<a-entity    id ="bot"
+					 visible="false"
+					 cursor-listener
+					 scale="0.004 0.004 0.004"
+					 position="0 0 -2"
+					 rotation="0 0 0"
+					 animation-mixer="clip: idle"
+					 gltf-model="src: url(models/mech_drone/scene.gltf);"
+		></a-entity>
+	</a-scene>
+	<div style="position: absolute; height: 50px; left: 50px; bottom: 50px;">
+		<button onclick="placeAR();" style="width: 50px; height: 50px; margin-right: 20px;">place</button>
+		<button onclick="runAnimation({clip: 'Take 001', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">anim 1</button>
+		<!-- <button onclick="runAnimation({clip: 'walk', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">walk</button>
+		<button onclick="runAnimation({clip: 'run', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">run</button> -->
+		<!-- <button onclick="" style="width: 50px; height: 50px; margin-right: 20px;">jump</button> -->
+	</div>
+	<script>
+		// You can also set which camera to use (front/back/etc)
+		// @SEE https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+		navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: "environment"}})
+				.then(stream => {
+					let $video = document.querySelector('video')
+					$video.srcObject = stream
+					$video.onloadedmetadata = () => {
+						$video.play()
+						var height = stream.getVideoTracks()[0].getSettings().height;
+						var width = stream.getVideoTracks()[0].getSettings().width;
+						console.log('width: ' + width + ', height: ' + height);
+						var screenwidth = document.documentElement.clientWidth
+						var screenheight = document.documentElement.clientHeight
+						console.log('screenwidth: ' + screenwidth + ', screenheight: ' + screenheight);
+						var screenAspectRatio = screenwidth / screenheight;
+						console.log('screenAspectRatio: ' + screenAspectRatio );
+						var videoAspectRatio = width / height;
+						console.log('videoAspectRatio: ' + videoAspectRatio );
+						var quadDistance = 1000;
+						var fieldOfView = 80;
+						var videoScreen = document.getElementById('videoScreen');
+						if (screenAspectRatio >= videoAspectRatio) { //
+							var frustumHeight = 2.0 * quadDistance * Math.tan(fieldOfView * 0.5 * (Math.PI / 180)) * (screenAspectRatio / videoAspectRatio);
+							var width = frustumHeight * videoAspectRatio;
+							console.log('frustumHeight: ' + frustumHeight);
+							videoScreen.setAttribute('width', String(width));
+							videoScreen.setAttribute('height', String(frustumHeight));
+						} else {
+							var frustumHeight = 2.0 * quadDistance * Math.tan(fieldOfView * 0.5 * (Math.PI / 180));
+							var width = frustumHeight * videoAspectRatio;
+							console.log('frustumHeight: ' + frustumHeight);
+							videoScreen.setAttribute('width', String(width));
+							videoScreen.setAttribute('height', String(frustumHeight));
+						}
+					}
+				})
+
+		function placeAR()
+		{
+			var bot = document.getElementById("bot");
+			bot.setAttribute('visible', 'true');
+			var camera = document.querySelector('[camera]');
+			var cameraRotation = camera.getAttribute('rotation');
+			var direction = camera.object3D.getWorldDirection();
+			var cameraPosition = camera.object3D.position;
+			console.log("camera rotation: " + JSON.stringify(cameraRotation));
+			console.log("camera direction: " + JSON.stringify(direction));
+			console.log("cameraPosition: " + JSON.stringify(cameraPosition));
+			var distance = 2.0;
+			var position = (-direction.x * distance) + ' ' + (-direction.y * distance) + ' ' + (-direction.z * distance);
+			console.log('about to set bot position to:  ' + position);
+			bot.setAttribute('position', position)
+			bot.setAttribute('rotation', '0 ' + cameraRotation.y +  ' 0')
+		}
+
+		function runAnimation(params) {
+			var bot = document.getElementById("bot");
+			bot.setAttribute("animation-mixer", params);
+		}
+	</script>
+</body>
