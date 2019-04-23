@@ -169,6 +169,7 @@
 			var position = (-direction.x * distance) + ' ' + (-direction.y * distance) + ' ' + (-direction.z * distance);
 			console.log('about to set bot position to:  ' + position);
 			bot.setAttribute('position', position)
+			bot.setAttribute('rotation', '0 ' + cameraRotation.y +  ' 0')
 		}
 
 		function runAnimation(params) {
