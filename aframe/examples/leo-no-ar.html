@@ -91,16 +91,22 @@
 		</a-video>
 		</a-camera>
 		<a-entity    id ="bot"
+					 visible="false"
 					 cursor-listener
-					 scale="3.5 3.5 3.5"
-					 position="0 1 -12.5"
+					 scale="1 1 1"
+					 position="0 0 -5"
 					 rotation="0 0 0"
 					 animation-mixer="clip: idle"
-
 					 json-model="src: url(models/bot4.json);"
 		></a-entity>
 	</a-scene>
-
+	<div style="position: absolute; height: 50px; left: 50px; bottom: 50px;">
+		<button onclick="placeAR();" style="width: 50px; height: 50px; margin-right: 20px;">place</button>
+		<button onclick="runAnimation({clip: 'idle', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">idle</button>
+		<button onclick="runAnimation({clip: 'walk', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">walk</button>
+		<button onclick="runAnimation({clip: 'run', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">run</button>
+		<!-- <button onclick="" style="width: 50px; height: 50px; margin-right: 20px;">jump</button> -->
+	</div>
 	<script>
 		// You can also set which camera to use (front/back/etc)
 		// @SEE https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
@@ -138,5 +144,21 @@
 						}
 					}
 				})
+
+		function placeAR()
+		{
+			var bot = document.getElementById("bot");
+			bot.setAttribute('visible', 'true');
+			var camera = document.querySelector('[camera]').object3D
+			var direction = camera.getWorldDirection();
+			console.log("camera direction: " + JSON.stringify(direction));
+			var distance = 5;
+			bot.setAttribute('position', (direction.x * distance) + ' ' + (direction.y * distance) + ' ' + (-direction.z * distance))
+		}
+
+		function runAnimation(params) {
+			var bot = document.getElementById("bot");
+			bot.setAttribute("animation-mixer", params);
+		}
 	</script>
 </body>
