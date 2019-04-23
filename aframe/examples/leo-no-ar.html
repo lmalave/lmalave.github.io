@@ -158,9 +158,11 @@
 		{
 			var bot = document.getElementById("bot");
 			bot.setAttribute('visible', 'true');
-			var camera = document.querySelector('[camera]').object3D
-			var direction = camera.getWorldDirection();
-			var cameraPosition = camera.position;
+			var camera = document.querySelector('[camera]');
+			var cameraRotation = camera.getAttribute('rotation');
+			var direction = camera.object3D.getWorldDirection();
+			var cameraPosition = camera.object3D.position;
+			console.log("camera rotation: " + JSON.stringify(cameraRotation));
 			console.log("camera direction: " + JSON.stringify(direction));
 			console.log("cameraPosition: " + JSON.stringify(cameraPosition));
 			var distance = 2.0;
