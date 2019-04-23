@@ -159,7 +159,7 @@
 			console.log("camera direction: " + JSON.stringify(direction));
 			console.log("cameraPosition: " + JSON.stringify(cameraPosition));
 			var distance = 5.0;
-			var position = (direction.x * distance) + ' ' + (direction.y * distance) + ' ' + (-direction.z * distance);
+			var position = (-direction.x * distance) + ' ' + (direction.y * distance) + ' ' + (-direction.z * distance);
 			console.log('about to set bot position to:  ' + position);
 			bot.setAttribute('position', position)
 		}
