@@ -91,7 +91,18 @@
 
 		<a-camera-static/> -->
 		<a-camera id="camera" position="0 0 0">
-		<a-video id="videoScreen"
+			<a-entity id="mouse-cursor" visible="false"
+					  position="0 0 -1"  scale="0.05 0.05 0.05"
+					  geometry="primitive: ring;"
+					  material="color: cyan; shader: flat"
+					  cursor="fuse: false; fuseTimeout: 750; rayOrigin: mouse;"
+					  raycaster="showLine: true; objects: .cursorTarget;">
+				<a-animation begin="click" easing="ease-in" attribute="scale" dur="150"
+							 fill="forwards" from="0.01 0.01 0.01" to="0.05 0.05 0.05"></a-animation>
+				<a-animation begin="cursor-fusing" easing="ease-in" attribute="scale" dur="750"
+							 fill="backwards" from="0.05 0.05 0.05" to="0.01 0.01 0.01"></a-animation>
+			</a-entity>
+			<a-video id="videoScreen"
 				 material="src:#webcam; shader: flat;"
 				 geometry="primitive: plane; segmentsHeight: 16; segmentsWidth: 16"
 				 a-webcam
@@ -111,6 +122,13 @@
 					 animation-mixer="clip: idle"
 					 gltf-model="src: url(models/mech_drone/scene.gltf);"
 		>
+			<a-sphere id="modelCollider"
+					  scale="200 200 200"
+					  position="0 70 0"
+					  class="cursorTarget"
+					  onclick="runAnimation({clip: 'Take 001', crossFadeDuration: 0.3});"
+					  material="color: white; shader: flat; opacity: 0.0;"
+			></a-sphere>
 			<a-entity light="type: directional; color: #FFF; intensity: 2.0" position="-100 200 700"></a-entity>
 		</a-entity>
 		<a-image id="spritesheet" src="images/explosion_spritesheet.png"
