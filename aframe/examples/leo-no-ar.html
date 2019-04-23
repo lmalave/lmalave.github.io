@@ -53,6 +53,9 @@
 
 
 
+		},
+		tick() {
+
 		}
 	});
 </script>
@@ -153,7 +156,9 @@
 			var direction = camera.getWorldDirection();
 			console.log("camera direction: " + JSON.stringify(direction));
 			var distance = 5;
-			bot.setAttribute('position', (direction.x * distance) + ' ' + (direction.y * distance) + ' ' + (-direction.z * distance))
+			var position = (direction.x * distance) + ' ' + (direction.y * distance) + ' ' + (-direction.z * distance);
+			console.log('about to set bot position to:  ' + position);
+			bot.setAttribute('position', position)
 		}
 
 		function runAnimation(params) {
