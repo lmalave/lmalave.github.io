@@ -142,7 +142,7 @@
 	<div style="position: absolute; height: 50px; left: 50px; bottom: 50px;">
 		<button onclick="placeAR();" style="width: 80px; height: 80px; margin-right: 20px;">place</button>
 		<button onclick="runAnimation({clip: 'Take 001', crossFadeDuration: 0.3});" style="width: 80px; height: 80px; margin-right: 80px;">animate</button>
-		<button onclick="document.querySelector('a-scene').components.screenshot.capture('perspective');">photo</button>
+		<button onclick="takeScreenshot();" style="width: 80px; height: 80px; margin-right: 80px;">photo</button>
 		<!-- <button onclick="runAnimation({clip: 'walk', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">walk</button>
 		<button onclick="runAnimation({clip: 'run', crossFadeDuration: 0.3});" style="width: 50px; height: 50px; margin-right: 20px;">run</button> -->
 		<!-- <button onclick="" style="width: 50px; height: 50px; margin-right: 20px;">jump</button> -->
@@ -212,6 +212,15 @@
 		function runAnimation(params) {
 			var bot = document.getElementById("bot");
 			bot.setAttribute("animation-mixer", params);
+		}
+
+		function takeScreenshot() {
+			var screenwidth = document.documentElement.clientWidth
+			var screenheight = document.documentElement.clientHeight
+			var screenshotComponent = document.querySelector('a-scene').components.screenshot;
+			screenshotComponent.width = screenwidth;
+			screenshotComponent.height = screenheight;
+			screenshotComponent.capture('perspective');
 		}
 	</script>
 	<script type="text/javascript">
