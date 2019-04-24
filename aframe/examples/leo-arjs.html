@@ -9,8 +9,8 @@
 
 
 <body style='margin : 0px; overflow: hidden;'>
-	<a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-		<!-- <a-camera id="camera" position="0 0 0">
+	<a-scene embedded arjs="debugUIEnabled: false;">
+		<a-camera id="camera" position="0 0 0">
 			<a-entity id="mouse-cursor" visible="false"
 					  position="0 0 -1"  scale="0.05 0.05 0.05"
 					  geometry="primitive: ring;"
@@ -22,30 +22,27 @@
 				<a-animation begin="cursor-fusing" easing="ease-in" attribute="scale" dur="750"
 							 fill="backwards" from="0.05 0.05 0.05" to="0.01 0.01 0.01"></a-animation>
 			</a-entity>
-		</a-camera> -->
-
-		<a-sphere position="0 0.5 0" radius="0.5" color="#EF2D5E"></a-sphere>
-		<a-plane position="0 0 0" rotation="-90 0 0" width="1" height="1" color="#7BC8A4"></a-plane>
-
-		<a-marker-camera preset='hiro'></a-marker-camera>
-		<!--<a-box position='0 0 0' material='color: yellow; shader: flat;' scale="0.5 0.5 0.5"></a-box> -->
-		<!-- <a-entity light="type: directional; color: #FFF; intensity: 2.0" position="-100 700 200"></a-entity> -->
+		</a-camera>
+		<a-marker preset='custom' type='pattern' url='markers/pattern-marker.patt'>
+			<a-box position='0 0 0' material='color: yellow; shader: flat;' scale="0.5 0.5 0.5"></a-box>
+			<a-entity light="type: directional; color: #FFF; intensity: 2.0" position="-100 700 200"></a-entity>
 		<a-entity    id ="bot"
 					 visible="true"
 					 cursor-listener
 					 scale="0.004 0.004 0.004"
-					 position="0 1 0"
+						 position="0 0 0"
 					 rotation="-90 0 0"
 					 gltf-model="src: url(models/mech_drone/scene.gltf);"
 		>
-			<!-- <a-sphere id="modelCollider"
+				<a-sphere id="modelCollider"
 					  scale="200 200 200"
 					  position="0 70 0"
 					  class="cursorTarget"
 					  onclick="runAnimation({clip: 'Take 001', crossFadeDuration: 0.3});"
 					  material="color: white; shader: flat; opacity: 0.0;"
-			></a-sphere> -->
+				></a-sphere>
 		</a-entity>
+		</a-marker>
 	</a-scene>
 <script>
 	function runAnimation(params) {
