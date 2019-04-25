@@ -78,7 +78,7 @@
 	</div>
 	-->
 	<!-- Define your 3d scene and enabled ar.js -->
-	<a-scene>
+	<a-scene antialias="true">
 		<a-assets>
 			<video id="webcam" playsinline></video>
 		</a-assets>
@@ -217,7 +217,7 @@
 		function takeScreenshot() {
 			var screenwidth = document.documentElement.clientWidth;
 			var screenheight = document.documentElement.clientHeight;
-			document.querySelector('a-scene').setAttribute('screenshot', {width: screenwidth, height: screenheight});
+			// document.querySelector('a-scene').setAttribute('screenshot', {width: screenwidth, height: screenheight});
 			document.querySelector('a-scene').components.screenshot.capture('perspective');
 		}
 	</script>
