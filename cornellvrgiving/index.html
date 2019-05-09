@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/bundle.js"></script>
+    <script src="js/aframe-gui.js"></script>
+</head>
+<body>
+<a-scene>
+    <a-assets>
+        <a-asset-item id="clock_tower" src="3d/McGrawTowerFinal_gltf/McGrawTowerFinal.gltf"></a-asset-item>
+    </a-assets>
+    <a-sky src="https://storage.googleapis.com/orbix360-prod-images/users/h8h3eOiMFTVUooRZ86teiHO914m1/5095596503334912/cornelllibraryjpg-1556909373123.jpg"
+           rotation="0 -28 0"
+
+    ></a-sky>
+
+
+    <a-gui-flex-container
+            flex-direction="row" justify-content="center" align-items="normal" component-padding="0.1"
+            opacity="0.7" width="12" height="2"
+            position="-6 2.5 -6" rotation="0 45 0"
+    >
+        <a-gui-button
+                width="2.5" height="0.75"
+                onclick="testButtonAction" key-code="32"
+                value="test button"
+                margin="0 0 0.05 0"
+        >
+        </a-gui-button>
+        <a-gui-button
+                width="2.5" height="0.75"
+                onclick="testButtonAction" key-code="32"
+                value="test button"
+                margin="0 0 0.05 0"
+        >
+        </a-gui-button>
+        <a-gui-button
+                width="2.5" height="0.75"
+                onclick="testButtonAction" key-code="32"
+                value="test button"
+                margin="0 0 0.05 0"
+        >
+        </a-gui-button>
+        <a-gui-button
+                width="2.5" height="0.75"
+                onclick="testButtonAction" key-code="32"
+                value="test button"
+                margin="0 0 0.05 0"
+        >
+        </a-gui-button>
+    </a-gui-flex-container>
+
+
+    <!-- Clock Tower -->
+     <a-entity gltf-model="#clock_tower" position= "0 -5 -30"
+              rotation= "0 0 0"></a-entity>
+
+    <a-entity light="type: ambient;
+                             color: #BBB">
+    </a-entity>
+    <!-- 1 Directional Light -->
+    <a-entity light="type: directional;
+                             color: #FFFFFF;
+                             intensity: 2.6;
+                             castShadow: true"
+              position="-0.5 1 1">
+    </a-entity>
+</a-scene>
+</body>
+</html>
